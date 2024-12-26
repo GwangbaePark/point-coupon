@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { User } from './ enitities/user.entity';
+import { User } from './enitities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @ApiTags('회원') // Swagger에서 'users' 태그로 분류

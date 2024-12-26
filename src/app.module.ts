@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { CouponModule } from './coupon/coupon.module';
 import { PointModule } from './point/point.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserCouponsModule } from './user-coupons/user-coupons.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true, // 엔티티를 자동으로 로드
       synchronize: true, // 개발 환경에서만 true (데이터베이스 스키마를 자동으로 생성)
     }),
+    UserCouponsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
