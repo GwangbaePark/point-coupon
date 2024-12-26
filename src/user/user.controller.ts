@@ -12,13 +12,12 @@ import { UserService } from './user.service';
 import { User } from './enitities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@ApiTags('회원') // Swagger에서 'users' 태그로 분류
+@ApiTags('회원')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiOperation({ summary: '회원 전체 조회' })
   @ApiResponse({ status: 200, description: 'List of all users' })
   findAll(): Promise<User[]> {
     return this.userService.findAll();

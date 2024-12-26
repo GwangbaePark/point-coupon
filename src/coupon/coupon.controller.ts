@@ -11,12 +11,14 @@ import {
 } from '@nestjs/common';
 import { CouponService } from './coupon.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('쿠폰관리')
 @Controller('coupons')
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
-  // 쿠폰 생성
+  @ApiOperation({ summary: '쿠폰 생성' })
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async create(@Body() createCouponDto: CreateCouponDto) {
@@ -31,19 +33,19 @@ export class CouponController {
     );
   }
 
-  // 모든 쿠폰 조회
+  @ApiOperation({ summary: '모든 쿠폰 조회' })
   @Get()
   async findAll() {
     return await this.couponService.findAll();
   }
 
-  // 특정 쿠폰 조회
+  @ApiOperation({ summary: '특정 쿠폰 조회' })
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.couponService.findOne(id);
   }
 
-  // 쿠폰 업데이트
+  @ApiOperation({ summary: '쿠폰 업데이트' })
   @Patch(':id')
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async update(
@@ -53,7 +55,7 @@ export class CouponController {
     return await this.couponService.update(id, updateCouponDto);
   }
 
-  // 쿠폰 삭제
+  @ApiOperation({ summary: '쿠폰 삭제' })
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return await this.couponService.delete(id);
