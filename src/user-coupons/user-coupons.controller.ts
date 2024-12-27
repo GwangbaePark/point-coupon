@@ -7,6 +7,7 @@ import {
   Body,
   UsePipes,
   ValidationPipe,
+  Options,
 } from '@nestjs/common';
 import { UserCouponService } from './user-coupons.service';
 import { AddCouponDto } from './dto/add-coupon.dto';
@@ -15,6 +16,10 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('쿠폰 사용')
 @Controller('user-coupons')
 export class UserCouponController {
+  @Options()
+  handleOptions() {
+    return {};
+  }
   constructor(private readonly userCouponService: UserCouponService) {}
 
   @ApiOperation({ summary: '사용자에게 쿠폰 등록' })

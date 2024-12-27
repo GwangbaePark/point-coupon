@@ -22,6 +22,9 @@ export class Coupon {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 10, unique: true })
+  couponCode: string; // 유니크한 10자리 문자열
+
   @Column({ type: 'enum', enum: CouponType })
   type: CouponType; // 쿠폰 타입: 할인권 또는 금액권
 

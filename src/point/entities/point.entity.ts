@@ -18,7 +18,7 @@ export class Point {
   serviceType: ServiceType; // 서비스 타입
 
   @Column({ type: 'int' })
-  points: number; // 적립 포인트
+  points: number = 0; // 적립 포인트
 
   @ManyToOne(() => User, (user) => user.points, { onDelete: 'CASCADE' })
   user: User; // 사용자 관계

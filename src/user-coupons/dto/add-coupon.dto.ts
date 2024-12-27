@@ -1,4 +1,4 @@
-import { IsInt } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AddCouponDto {
@@ -6,7 +6,8 @@ export class AddCouponDto {
   @IsInt()
   userId: number;
 
-  @ApiProperty({ example: '2', description: '쿠폰 아이디' })
-  @IsInt()
-  couponId: number;
+  @ApiProperty({ example: 'AAD36F632F', description: '쿠폰 발행코드' })
+  @IsString()
+  @IsNotEmpty({ message: 'Coupon Code is required.' })
+  couponCode: string;
 }

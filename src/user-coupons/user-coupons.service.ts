@@ -25,24 +25,24 @@ export class UserCouponService {
 
   // 사용자에게 쿠폰 등록
   async addCoupon(addCouponDto: AddCouponDto): Promise<UserCoupon> {
-    const { userId, couponId } = addCouponDto;
+    const { userId, couponCode } = addCouponDto;
 
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found.`);
     }
 
-    const coupon = await this.couponRepository.findOneBy({ id: couponId });
+    const coupon = await this.couponRepository.findOneBy({ couponCode });
     if (!coupon) {
-      throw new NotFoundException(`Coupon with ID ${couponId} not found.`);
+      throw new NotFoundException(`Coupon with code ${couponCode} not found.`);
     }
 
     const existingUserCoupon = await this.userCouponRepository.findOne({
-      where: { user: { id: userId }, coupon: { id: couponId } },
+      where: { coupon: { id: coupon.id } },
     });
     if (existingUserCoupon) {
       throw new BadRequestException(
-        'This coupon is already assigned to the user.',
+        '등록하신 쿠폰은 이미 등록되어 있는 쿠폰입니다.',
       );
     }
 

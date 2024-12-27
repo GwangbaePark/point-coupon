@@ -9,7 +9,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { CouponType, ServiceType } from '../entities/coupon.entity';
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCouponDto {
 

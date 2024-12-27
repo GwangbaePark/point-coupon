@@ -15,6 +15,16 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document); // Swagger UI를 '/api-docs' 경로에 설정
-  await app.listen(process.env.PORT ?? 3000);
+  // 기본 CORS 설정
+  app.enableCors({
+    origin: 'http://localhost:8001', // 요청을 허용할 출처
+    credentials: true, // 쿠키 및 인증 정보 허용
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // 허용할 HTTP 메서드
+    allowedHeaders: 'Content-Type,Authorization,X-Requested-With', // 허용할 헤더
+  });
+
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();

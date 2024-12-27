@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Coupon, CouponType, ServiceType } from './entities/coupon.entity';
 import { CreateCouponDto } from './dto/create-coupon.dto';
+import { generateUniqueCouponCode} from '../utils/random-code-generator';
 
 @Injectable()
 export class CouponService {
@@ -19,12 +20,15 @@ export class CouponService {
     serviceType: ServiceType,
     expirationDate: Date | null,
   ): Promise<Coupon> {
+    const couponCode = generateUniqueCouponCode();
+
     const newCoupon = this.couponRepository.create({
       type,
       amount: type === CouponType.AMOUNT ? amount : null,
       discountRate: type === CouponType.DISCOUNT ? discountRate : null,
       serviceType,
       expirationDate,
+      couponCode,
     });
     return await this.couponRepository.save(newCoupon);
   }
