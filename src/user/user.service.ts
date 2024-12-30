@@ -25,7 +25,7 @@ export class UserService {
     // 이메일 중복 확인
     const existingUser = await this.userRepository.findOneBy({ email });
     if (existingUser) {
-      throw new BadRequestException('Email already exists'); // 중복 시 예외 발생
+      throw new BadRequestException('이미 등록되어 있는 이메일 입니다.'); // 중복 시 예외 발생
     }
     const newUser = this.userRepository.create(createUserDto);
     return this.userRepository.save(newUser);

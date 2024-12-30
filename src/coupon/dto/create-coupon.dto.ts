@@ -2,18 +2,21 @@ import {
   IsEnum,
   IsInt,
   IsOptional,
-  IsISO8601,
   Min,
   Max,
   IsNumber,
   ValidateIf,
+  IsString,
+  IsNotEmpty,
 } from 'class-validator';
 import { CouponType, ServiceType } from '../entities/coupon.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCouponDto {
-
-  @ApiProperty({ example: 'CouponType.AMOUNT', description: '쿠폰 종류(할인권 또는 금액권)' })
+  @ApiProperty({
+    example: 'CouponType.AMOUNT',
+    description: '쿠폰 종류(할인권 또는 금액권)',
+  })
   @IsEnum(CouponType, {
     message: 'Invalid coupon type. Allowed types: DISCOUNT, AMOUNT',
   })
@@ -33,7 +36,7 @@ export class CreateCouponDto {
   @ValidateIf((o) => o.type === CouponType.DISCOUNT)
   @IsNumber()
   @Min(0.01)
-  @Max(0.1)
+  @Max(0.2)
   discountRate?: number;
 
   @ApiProperty({ example: 'M클래스', description: '서비스 유형' })
@@ -43,15 +46,24 @@ export class CreateCouponDto {
   serviceType: ServiceType; // 스킬업, M클래스, 해피폴리오
 
   @ApiProperty({
-    example: '2024-12-31T12:00:00.000Z',
+    example: '2024-12-10',
+    description: '쿠폰 유효기간 시작일',
+  })
+  @IsOptional()
+  validityDate?: string;
+
+  @ApiProperty({
+    example: '2024-12-31',
     description: '쿠폰 유효 종료일자',
   })
   @IsOptional()
-  @IsISO8601(
-    {},
-    {
-      message: 'Invalid expiration date. Provide a valid ISO8601 date string.',
-    },
-  )
-  expirationDate?: string; // 유효기간 (옵션)
+  expirationDate?: string;
+
+  @ApiProperty({
+    example: '10% Discount on all products',
+    description: 'Coupon description',
+  })
+  @IsString()
+  @IsNotEmpty()
+  information: string; // 쿠폰정보 필드 추가
 }

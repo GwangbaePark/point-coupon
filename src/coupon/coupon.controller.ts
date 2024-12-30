@@ -22,15 +22,7 @@ export class CouponController {
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async create(@Body() createCouponDto: CreateCouponDto) {
-    const { type, amount, discountRate, serviceType, expirationDate } = createCouponDto;
-    const expiration = expirationDate ? new Date(expirationDate) : null;
-    return await this.couponService.create(
-      type,
-      amount,
-      discountRate,
-      serviceType,
-      expiration,
-    );
+    return await this.couponService.create(createCouponDto);
   }
 
   @ApiOperation({ summary: '모든 쿠폰 조회' })

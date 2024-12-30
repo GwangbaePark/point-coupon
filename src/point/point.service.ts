@@ -17,16 +17,16 @@ export class PointService {
 
   // 포인트 등록
   async create(createPointDto: CreatePointDto): Promise<Point> {
-    const { userId, serviceType, points } = createPointDto;
+    const { userId, points } = createPointDto;
 
     // 사용자 검증
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found.`);
+      throw new NotFoundException(`해당되는 아이디가 없습니다.`);
     }
 
     // 포인트 생성 및 저장
-    const newPoint = this.pointRepository.create({ user, serviceType, points });
+    const newPoint = this.pointRepository.create({ user, points });
     return await this.pointRepository.save(newPoint);
   }
 
@@ -37,7 +37,7 @@ export class PointService {
       relations: ['points'],
     });
     if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found.`);
+      throw new NotFoundException(`해당되는 아이디가 없습니다.`);
     }
     return user.points;
   }

@@ -6,16 +6,12 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { ServiceType } from '../../coupon/entities/coupon.entity';
 import { User } from '../../user/enitities/user.entity';
 
 @Entity('points')
 export class Point {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'enum', enum: ServiceType })
-  serviceType: ServiceType; // 서비스 타입
 
   @Column({ type: 'int' })
   points: number = 0; // 적립 포인트

@@ -1,5 +1,4 @@
-import { IsEnum, IsInt, Min, IsNotEmpty } from 'class-validator';
-import { ServiceType } from '../../coupon/entities/coupon.entity';
+import { IsInt, Min, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePointDto {
@@ -8,11 +7,6 @@ export class CreatePointDto {
   @IsNotEmpty({ message: 'User ID is required.' })
   userId: number; // 사용자 ID
 
-  @ApiProperty({ example: '스킬업', description: '서비스 종류' })
-  @IsEnum(ServiceType, {
-    message: `Invalid service type. Allowed values: ${Object.values(ServiceType).join(', ')}`,
-  })
-  serviceType: ServiceType; // 서비스 타입
 
   @ApiProperty({ example: '1000', description: '적립 포인트 금액' })
   @IsInt()

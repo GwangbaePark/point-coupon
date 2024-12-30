@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Coupon, CouponType, ServiceType } from './entities/coupon.entity';
+import { Coupon, CouponType} from './entities/coupon.entity';
 import { CreateCouponDto } from './dto/create-coupon.dto';
-import { generateUniqueCouponCode} from '../utils/random-code-generator';
+import { generateUniqueCouponCode } from '../utils/random-code-generator';
 
 @Injectable()
 export class CouponService {
@@ -13,13 +13,16 @@ export class CouponService {
   ) {}
 
   // 쿠폰 생성
-  async create(
-    type: CouponType,
-    amount: number | null,
-    discountRate: number | null,
-    serviceType: ServiceType,
-    expirationDate: Date | null,
-  ): Promise<Coupon> {
+  async create(createPointDto: CreateCouponDto): Promise<Coupon> {
+    const {
+      type,
+      amount,
+      serviceType,
+      validityDate,
+      expirationDate,
+      discountRate,
+      information,
+    } = createPointDto;
     const couponCode = generateUniqueCouponCode();
 
     const newCoupon = this.couponRepository.create({
@@ -27,8 +30,10 @@ export class CouponService {
       amount: type === CouponType.AMOUNT ? amount : null,
       discountRate: type === CouponType.DISCOUNT ? discountRate : null,
       serviceType,
+      validityDate,
       expirationDate,
       couponCode,
+      information,
     });
     return await this.couponRepository.save(newCoupon);
   }
@@ -42,7 +47,7 @@ export class CouponService {
   async findOne(id: number): Promise<Coupon> {
     const coupon = await this.couponRepository.findOneBy({ id });
     if (!coupon) {
-      throw new NotFoundException(`Coupon with id ${id} not found.`);
+      throw new NotFoundException(`해당 쿠폰이 존재하지 않습니다.`);
     }
     return coupon;
   }
@@ -77,7 +82,7 @@ export class CouponService {
   async delete(id: number): Promise<void> {
     const result = await this.couponRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Coupon with id ${id} not found.`);
+      throw new NotFoundException(`해당 쿠폰이 존재하지 않습니다.`);
     }
   }
 }

@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Transform } from "class-transformer";
 
 export enum CouponType {
   DISCOUNT = 'DISCOUNT', // 할인권
@@ -37,11 +38,19 @@ export class Coupon {
   @Column({ type: 'enum', enum: ServiceType })
   serviceType: ServiceType; // 스킬업, M클래스, 해피폴리오
 
-  @Column({ type: 'datetime', nullable: true })
-  expirationDate?: Date; // 유효기간
+  @Transform(({ value }) => (value ? value.toISOString().split('T')[0] : null))
+  @Column({ type: 'date', nullable: true })
+  validityDate?: Date; // 유효기간 시작일
+
+  @Transform(({ value }) => (value ? value.toISOString().split('T')[0] : null))
+  @Column({ type: 'date', nullable: true })
+  expirationDate?: Date; // 유효기간 종료일
 
   @Column({ default: false })
   used: boolean; // 사용 여부
+
+  @Column() // 쿠폰정보 필드 추가
+  information: string;
 
   @CreateDateColumn()
   createdAt: Date;
